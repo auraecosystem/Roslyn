@@ -1,5 +1,5 @@
 # Incremental Generators
-
+ 
 ## Summary
 
 Incremental generators are a new API that replaces
@@ -14,7 +14,7 @@ strategies that can be applied in a high performance way by the hosting layer.
 - Support generating more items than just source texts
 - Exist alongside `ISourceGenerator` based implementations
 
-## Simple Example
+> ## Simple Example
 
 We begin by defining a simple incremental generator that extracts the contents
 of additional text files and makes their contents available as compile time
@@ -48,7 +48,7 @@ public class Generator : IIncrementalGenerator
 }
 ```
 
-## Implementation
+> ## Implementation
 
 An incremental generator is an implementation of `Microsoft.CodeAnalysis.IIncrementalGenerator`.
 
@@ -76,7 +76,7 @@ public class MyGenerator : IIncrementalGenerator { ... }
 An assembly can contain a mix of diagnostic analyzers, source generators and
 incremental generators.
 
-### Pipeline based execution
+> ### Pipeline based execution
 
 `IIncrementalGenerator` has an `Initialize` method that is called by the
 host[^1] exactly once, regardless of the number of further compilations that may
@@ -168,7 +168,7 @@ data contained within the provider, which in turn creates a new value provider.
 The simplest transformation is `Select`. This maps the value in one provider
 into a new provider by applying a transform to it.
 
-```ascii
+```ascii.sctm
  IValueProvider<TSource>                   IValueProvider<TResult>
     ┌─────────────┐                           ┌─────────────┐
     │             │  Select<TSource,TResult>  │             │
@@ -194,7 +194,7 @@ Note how the return type of these methods are also an instance of
 `IncrementalValue[s]Provider`. This allows the generator to chain multiple
 transformations together:
 
-```ascii
+```ascii.sctm
  IValueProvider<TSource>                     IValueProvider<TResult1>                 IValueProvider<TResult2>
     ┌─────────────┐                            ┌─────────────┐                           ┌─────────────┐
     │             │  Select<TSource,TResult1>  │             │ Select<TResult1,TResult2> │             │
@@ -237,7 +237,7 @@ subtle. The selector function is applied multiple times, one to each item in the
 values provider. The results of each transformation are then used to create the
 values for the resulting values provider:
 
-```ascii
+```ascii.xlsl
                                           Select<TSource, TResult>
                                    .......................................
                                    .                   ┌───────────┐     .
@@ -291,7 +291,7 @@ public static partial class IncrementalValueSourceExtensions
 }
 ```
 
-```ascii
+```ascii.sql
                                          SelectMany<TSource, TResult>
                                    .......................................
                                    .                   ┌───────────┐     .
@@ -321,7 +321,7 @@ public static partial class IncrementalValueSourceExtensions
 }
 ```
 
-```ascii
+```ascii.sctm
                                              SelectMany<TSource, TResult>
                                    ...............................................
                                    .                        ┌─────────┐          .
@@ -382,7 +382,7 @@ predicate. Where is actually a specific form of select many, where each input
 transforms to exactly 1 or 0 outputs. However, as it is such a common operation
 it is provided as a primitive transformation directly.
 
-``` csharp
+``` fsharp
 public static partial class IncrementalValueSourceExtensions
 {
     public static IncrementalValuesProvider<TSource> Where<TSource>(this IncrementalValuesProvider<TSource> source, Func<TSource, bool> predicate);
