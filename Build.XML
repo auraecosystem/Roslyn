@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  ...
+  <ItemGroup Label="dotnet pack instructions">
+    <Content Include="build\*.targets">
+      <Pack>true</Pack>
+      <PackagePath>build\</PackagePath>
+    </Content>
+  </ItemGroup>
+  <Target Name="CollectRuntimeOutputs" BeforeTargets="_GetPackageFiles">
+    <!-- Collect these items inside a target that runs after build but before packaging. -->
+    <ItemGroup>
+      <Content Include="$(OutputPath)\*.dll;$(OutputPath)\*.json">
+        <Pack>true</Pack>
+        <PackagePath>build\</PackagePath>
+      </Content>
+    </ItemGroup>
+  </Target>
+  ...
+
+</Project>
